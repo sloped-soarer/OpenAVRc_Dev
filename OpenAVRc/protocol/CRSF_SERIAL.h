@@ -33,11 +33,13 @@
 #ifndef CRSF_SERIAL_H
 #define CRSF_SERIAL_H
 
-#define CRSF_CHAN_PACKET_SIZE     26
+#define CRSF_CHAN_PACKET_SIZE  26
+#define CRSF_MAX_FRAME_SIZE    64
+#define TELEMETRY_RX_PACKET_SIZE   64
 
 typedef struct
 {
-  uint8_t crsf_tx_buffer[CRSF_CHAN_PACKET_SIZE]; // Reserved aka Usart0TxBuffer_p2M
+  uint8_t crsf_tx_buffer[CRSF_MAX_FRAME_SIZE]; // Reserved aka Usart0TxBuffer_p2M
 volatile  uint8_t crsf_rx_state;
   uint8_t crsf_freq_rate;
   uint8_t crsf_40ms_flag;
@@ -49,30 +51,34 @@ volatile  uint8_t crsf_rx_state;
   uint8_t crsf_module_responding;
 } crsfSt_t;
 
-// Frame Type
-#define XF_TYPE_GPS              0x02
-#define XF_TYPE_VARIO            0x07
-#define XF_TYPE_BATTERY          0x08
-#define XF_TYPE_BARO_ALT         0x09
-#define XF_TYPE_HEARTBEAT        0x0b
-#define XF_TYPE_VTX              0x0F
-#define XF_TYPE_VTX_TELEM        0x10
-#define XF_TYPE_LINK             0x14
-#define XF_TYPE_CHANNELS         0x16
-#define XF_TYPE_RX_ID            0x1C
-#define XF_TYPE_TX_ID            0x1D
-#define XF_TYPE_ATTITUDE         0x1E
-#define XF_TYPE_FLIGHT_MODE      0x21
-#define XF_TYPE_PING_DEVICES     0x28
-#define XF_TYPE_DEVICE_INFO      0x29
-#define XF_TYPE_REQUEST_SETTINGS 0x2A
-#define XF_TYPE_SETTINGS_ENTRY   0x2B
-#define XF_TYPE_SETTINGS_READ    0x2C
-#define XF_TYPE_SETTINGS_WRITE   0x2D
-#define XF_TYPE_ELRS_INFO        0x2E
-#define XF_TYPE_COMMAND_ID       0x32
-#define XF_TYPE_RADIO_ID         0x3A
 
+// Frame Type
+#define CRSF_FRAMETYPE_GPS                 0x02
+#define CRSF_FRAMETYPE_VARIO               0x07
+#define CRSF_FRAMETYPE_BATTERY_SENSOR      0x08
+#define CRSF_FRAMETYPE_BARO_ALTITUDE       0x09
+#define CRSF_FRAMETYPE_HEARTBEAT           0x0B
+//#define XF_TYPE_VTX                      0x0F
+//#define XF_TYPE_VTX_TELEM                0x10
+#define CRSF_FRAMETYPE_LINK_STATISTICS     0x14
+#define CRSF_FRAMETYPE_RC_CHANNELS_PACKED  0x16
+#define CRSF_FRAMETYPE_LINK_RX_ID          0x1C
+#define CRSF_FRAMETYPE_LINK_TX_ID          0x1D
+#define CRSF_FRAMETYPE_ATTITUDE            0x1E
+#define CRSF_FRAMETYPE_FLIGHT_MODE         0x21
+
+// CRSF_FRAMETYPE 0x28 and higher use Extended Packet Format.
+#define CRSF_FRAMETYPE_DEVICE_PING         0x28
+#define CRSF_FRAMETYPE_DEVICE_INFO         0x29
+//#define XF_TYPE_REQUEST_SETTINGS         0x2A
+#define CRSF_FRAMETYPE_PARAMETER_SETTINGS_ENTRY  0x2B
+#define CRSF_FRAMETYPE_PARAMETER_READ            0x2C
+#define CRSF_FRAMETYPE_PARAMETER_WRITE           0x2D
+#define CRSF_FRAMETYPE_ELRS_STATUS               0x2E
+#define CRSF_FRAMETYPE_COMMAND                   0x32
+#define CRSF_FRAMETYPE_RADIO_ID                  0x3A // Sync mixer with OTA timing aka CRSFShot.
+#define CRSF_FRAMETYPE_MSP_REQ                   0x7A
+#define CRSF_FRAMETYPE_DISPLAYPORT_CMD           0x7D
 // Frame Subtype
 #define CRSF_UART_SYNC                      0xC8
 #define CRSF_SUBCOMMAND                     0x10

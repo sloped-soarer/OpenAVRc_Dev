@@ -61,7 +61,7 @@
 #include "MULTI_SERIAL_xmega.c"
 #elif (SERIAL_PROTOCOL==CRSF)
 #include "CRSF_SERIAL.h"
-#include "CRSF_SERIAL.c"
+#include "ELRS_SERIAL.c"
 #elif (SERIAL_PROTOCOL==SBUS)
 #include "SBUS_SERIAL.c"
 #elif (SERIAL_PROTOCOL==SUMD)
@@ -69,6 +69,7 @@
 #endif
 
 #if defined(SPIMODULES)
+#include "../protocol/spirf.h"
 
 #ifdef PROTO_HAS_CC2500
 #include "iface_cc2500.h"
