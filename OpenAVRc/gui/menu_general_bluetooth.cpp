@@ -109,9 +109,7 @@ void writeDataToModule(uint8_t choice)
     case ITEM_BT_AUTOCONNECT :
      if(g_eeGeneral.BT.Master && g_eeGeneral.BT.AutoCnx)
       {
-
        bluetooth_linkToRemote(g_eeGeneral.BT.Peer.Mac, BT_SET_TIMEOUT_MS);
-
       }
      break;
     }
@@ -123,7 +121,7 @@ void onPairSelected(const char *result)
 {
  uint8_t connected;
 // result is the new pair name!!
-//bluetooth_AtCmdMode(ON); allready setted in warning.warningResult
+ bluetooth_AtCmdMode(ON);
  strcpy(ReBuff.bluetooth.peer_name_str, result);
  memcpy(g_eeGeneral.BT.Peer.Mac, ReBuff.bluetooth.scann.Remote[shared_u8].MAC, BT_MAC_BIN_LEN);
 
@@ -192,7 +190,6 @@ void menuGeneralBluetooth(uint8_t event)
   }
  bluetooth_AtCmdMode(OFF);
 
- uint8_t addExt = 0; // used to add _M or _S
  coord_t y = MENU_HEADER_HEIGHT + 1;
  uint8_t sub = menuVerticalPosition - 1;
  uint8_t slen;
@@ -212,7 +209,6 @@ void menuGeneralBluetooth(uint8_t event)
 
     case ITEM_BT_NAME :
      editSingleName(BT_2ND_COLUMN, y, STR_NAME, ReBuff.bluetooth.name_zchar, (attr && s_editMode)? LEN_BT_NAME : strlen(ReBuff.bluetooth.name_zchar), event, attr, EE_GENERAL, RANGE_UPPER);
-     addExt = 1;
      break;
 
     case ITEM_BT_ROLE :
@@ -237,7 +233,6 @@ void menuGeneralBluetooth(uint8_t event)
       {
        lcdLastPos = BT_2ND_COLUMN;
       }
-     addExt = 2;
      break;
 
     case ITEM_BT_AUTOCONNECT :
@@ -270,11 +265,6 @@ void menuGeneralBluetooth(uint8_t event)
      ReBuff.bluetooth.eeWriteFlag = 0;
     }
 
-   if (addExt)
-    {
-     lcdDrawTextAtt(lcdLastPos,y,((g_eeGeneral.BT.Master ^ (addExt & 0x1))? Str_BT_Slave : Str_BT_Master),attr);
-     addExt = 0;
-    }
    y += FH;
   }
  eepromVars.s_eeDirtyMsk = eeDirtyMskMem; // restore mask
